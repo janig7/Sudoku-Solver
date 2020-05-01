@@ -1,5 +1,39 @@
 #include "sudoku.h"
 
+
+Square *** setUpPuzzle(int ** puzzle)
+{
+    Square *** sudoku;
+
+    sudoku = (Square***)malloc(sizeof(Square**)*9);
+
+    /* loop through rows */
+    for(int i = 0; i < 9; i++)
+    {
+        sudoku[i] = (Square**)malloc(sizeof(Square*)*9);
+        
+        /* loop through columns */
+        for(int j = 0; j  < 9; j++)
+        {
+            sudoku[i][j] = (Square*)malloc(sizeof(Square)*9);
+
+            sudoku[i][j]->number = puzzle[i][j];
+
+            sudoku[i][j]->row = i;
+            sudoku[i][j]->column = j;
+
+            if(sudoku[i][j]->number != 0)
+                sudoku[i][j]->code = POSSIBLE;
+            else
+                sudoku[i][j]->code = (char)0x0;
+        }
+    }
+
+    return sudoku;
+}
+
+
+
 int ** createPuzzle()
 {
     int ** puzzle;
