@@ -4,8 +4,11 @@
 Square *** setUpPuzzle(int ** puzzle)
 {
     Square *** sudoku;
+    Box ** boxes;
+    int currentBox = 0;
 
     sudoku = (Square***)malloc(sizeof(Square**)*9);
+    boxes = createBoxes();
 
     /* loop through rows */
     for(int i = 0; i < SIZE_ROWS; i++)
@@ -23,11 +26,24 @@ Square *** setUpPuzzle(int ** puzzle)
             sudoku[i][j]->column = j;
             sudoku[i][j]->solvable = 9;
 
+            boxes[currentBox]->squares[boxes[currentBox]->numbers ] = sudoku[i][j];
+            sudoku[i][j]->box = boxes[currentBox];
+            boxes[currentBox]->numbers++;
+
             for( int x = 0 ; x < SIZE_ROWS; x ++)
             {
                 sudoku[i][j]->possible[x] = 0;
             }
+            if(j == 2)
+                currentBox++;
+            if(j == 5)
+                currentBox++;        
         }
+        currentBox -= 2;
+        if( i == 2)
+            currentBox = 3;
+        if( i == 5)
+            currentBox = 6;
     }
 
       for(int i = 0; i < SIZE_ROWS; i++)
@@ -38,6 +54,7 @@ Square *** setUpPuzzle(int ** puzzle)
             {
                 sudoku[i][j]->solvable = 0;
                 updateSudoku(sudoku, i, j);
+                updateBoxes(sudoku, i, j);
                 UNSOLVED--;
             }
         }
